@@ -1,0 +1,55 @@
+# import the ArcGIS API for Python, and establish a connection to our portal.(Checked, explanation in 1.a.i)
+import arcgis
+
+gis = arcgis.gis.GIS("home")
+display(gis)
+
+import arcgis
+import getpass
+
+username = input("Username: ")
+password = getpass.getpass("Password: ")
+gis = arcgis.gis.GIS("https://www.arcgis.com/", username, password)
+
+users = arcgis.gis.UserManager(gis)
+
+# i dont think this part is necessary
+# get the totals of users in eacher user_type for your account
+# (assuming you have sufficient priveledges)
+
+user_types = users.counts('user_type')
+
+for index, row in user_types.iterrows():
+    print(str(row['count']) + '\t' + row['key'])
+    #iterate through the user_type groups and display the
+    #names of the ouser in each
+    group_users = users.search(user_type=row['key'],max_users=row['count'])
+    for user in group_users:
+        print('\t\tUser:' + user.username)
+        
+ # figure out how to automatically add the user       
+my_user = users.get('blucero4@miners.utep.edu')
+display(my_user)
+
+
+import os
+import json
+from IPython.display import display
+import arcgis
+from arcgis.mapping import WebMap
+from arcgis.gis import GIS
+
+# connect to your GIS
+# Create an anonymous connection to ArcGIS Online to search for contents
+gis1 = GIS()
+# Create a connection to your portal for publishing
+gis2 = GIS("https://pythonapi.playground.esri.com/portal")
+
+
+
+# create a WebMap object from the existing web map item
+wm=WebMap()
+wm.definition
+
+search_result = gis1.content.search("title:Nearmap US Vertical Imagery AND owner:esri", item_type = "Map Service", outside_org = True)
+display(search_result)
